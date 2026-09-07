@@ -1,7 +1,7 @@
 public class Item {
     
 
-    public static final int MAX_QUANTITY = 1_000_000;
+    public static final int MAX_QUANTITY = 10_000;
     public static final double MAX_PRICE = 1_000_000.0;
 
     private String id;

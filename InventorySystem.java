@@ -15,7 +15,7 @@ public class InventorySystem {
     }
 
     public static void main(String[] args) {
-     
+
         System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         InventorySystem app = new InventorySystem();
@@ -84,9 +84,11 @@ public class InventorySystem {
 
     private String centerText(String text, int width) {
         int totalPadding = width - text.length();
+
         if (totalPadding <= 0) {
             return text;
         }
+
         int leftPadding = totalPadding / 2;
         return " ".repeat(leftPadding) + text;
     }
@@ -117,8 +119,7 @@ public class InventorySystem {
                 continue;
             }
 
-            // Reject anything that isn't a plain whole number (no decimals, no signs,
-            // no commas/symbols) before attempting to parse it.
+            // Reject anything that isn't a plain whole number.
             if (!input.matches("\\d+")) {
                 System.out.print("Please enter a valid number: ");
                 continue;
@@ -126,16 +127,19 @@ public class InventorySystem {
 
             try {
                 choice = Integer.parseInt(input);
+
                 if (allowBack && choice == 0) {
                     validInput = true;
                 } else if (choice >= min && choice <= max) {
                     validInput = true;
                 } else {
-                    System.out.print("Please enter a number between " + min + " and " + max + ": ");
+                    System.out.print(
+                            "Please enter a number between " + min + " and " + max + ": ");
                 }
+
             } catch (NumberFormatException e) {
-                
-                System.out.print("Please enter a number between " + min + " and " + max + ": ");
+                System.out.print(
+                        "Please enter a number between " + min + " and " + max + ": ");
             }
         }
 
@@ -154,31 +158,37 @@ public class InventorySystem {
             }
 
             if (input.isEmpty()) {
-                System.out.print("Quantity cannot be empty. Please enter a valid quantity (or 'back' to cancel): ");
+                System.out.print(
+                        "Quantity cannot be empty. Please enter a valid quantity (or 'back' to cancel): ");
                 continue;
             }
 
-            // Only a plain whole number is allowed: no decimals, commas, letters, or symbols.
-            if (!input.matches("-?\\d+")) {
-                System.out.print("Quantity must be a whole number with no letters, commas, or symbols. Please try again: ");
+            if (!input.matches("\\d+")) {
+                System.out.print(
+                        "Quantity must be a whole number with no letters, commas, or symbols. Please try again: ");
                 continue;
             }
 
             long parsed;
+
             try {
                 parsed = Long.parseLong(input);
             } catch (NumberFormatException e) {
-                System.out.print("That quantity is too large. Please enter a valid quantity: ");
+                System.out.print(
+                        "That quantity is too large. Please enter a valid quantity: ");
                 continue;
             }
 
             if (parsed < 0) {
-                System.out.print("Quantity cannot be negative. Please enter a valid quantity: ");
+                System.out.print(
+                        "Quantity cannot be negative. Please enter a valid quantity: ");
                 continue;
             }
 
             if (parsed > Item.MAX_QUANTITY) {
-                System.out.print("Quantity cannot exceed " + Item.MAX_QUANTITY + ". Please enter a valid quantity: ");
+                System.out.print(
+                        "Quantity cannot exceed " + Item.MAX_QUANTITY
+                                + ". Please enter a valid quantity: ");
                 continue;
             }
 
@@ -201,18 +211,20 @@ public class InventorySystem {
             }
 
             if (input.isEmpty()) {
-                System.out.print("Price cannot be empty. Please enter a valid price (\u20B1) (or 'back' to cancel): ");
+                System.out.print(
+                        "Price cannot be empty. Please enter a valid price (\u20B1) (or 'back' to cancel): ");
                 continue;
             }
 
             // Only digits with an optional decimal point and at most 2 decimal places.
-            // Reject negative signs, commas, currency symbols, letters, and NaN/Infinity.
             if (!input.matches("\\d+(\\.\\d{1,2})?")) {
-                System.out.print("Price must be a number with at most 2 decimal places, no letters, commas, or currency symbols. Please try again: ");
+                System.out.print(
+                        "Price must be a number with at most 2 decimal places, no letters, commas, or currency symbols. Please try again: ");
                 continue;
             }
 
             double parsed;
+
             try {
                 parsed = Double.parseDouble(input);
             } catch (NumberFormatException e) {
@@ -221,7 +233,10 @@ public class InventorySystem {
             }
 
             if (!inventory.isPriceValid(parsed)) {
-                System.out.print("Price must be between \u20B10.00 and " + formatPrice(Item.MAX_PRICE) + ". Please enter a valid price: ");
+                System.out.print(
+                        "Price must be between \u20B10.00 and "
+                                + formatPrice(Item.MAX_PRICE)
+                                + ". Please enter a valid price: ");
                 continue;
             }
 
@@ -241,7 +256,9 @@ public class InventorySystem {
             System.out.println("\n1. Clothing");
             System.out.println("2. Electronics");
             System.out.println("3. Entertainment");
-            System.out.print("\nEnter Category (name, number, or 'back' to cancel): ");
+            System.out.print(
+                    "\nEnter Category (name, number, or 'back' to cancel): ");
+
             String rawInput = scanner.nextLine().trim();
 
             if (rawInput.equalsIgnoreCase("back")) {
@@ -273,6 +290,7 @@ public class InventorySystem {
         } else if (input.equals("3")) {
             return "Entertainment";
         }
+
         return input;
     }
 
@@ -294,7 +312,8 @@ public class InventorySystem {
             }
 
             if (!inventory.isIdValid(id)) {
-                System.out.println("ID must be 3-20 characters long and contain only letters, numbers, hyphens (-), and underscores (_).");
+                System.out.println(
+                        "ID must be 3-20 characters long and contain only letters, numbers, hyphens (-), and underscores (_).");
                 continue;
             }
 
@@ -322,7 +341,8 @@ public class InventorySystem {
             }
 
             if (!inventory.isNameValid(name)) {
-                System.out.println("Name must be 2-40 characters, contain at least one letter, and must not contain double spaces.");
+                System.out.println(
+                        "Name must be 2-40 characters, contain at least one letter, and must not contain double spaces.");
                 continue;
             }
 
@@ -333,30 +353,35 @@ public class InventorySystem {
     }
 
     private void cancelOperation() {
-        System.out.println("Operation cancelled. Returning to main menu...");
+        System.out.println(
+                "Operation cancelled. Returning to main menu...");
     }
 
     private void addItem() {
         printSectionHeader("Add Item");
 
         String category = getCategoryInput();
+
         if (category == null) {
             cancelOperation();
             return;
         }
 
         String id = getIdInput();
+
         if (id == null) {
             cancelOperation();
             return;
         }
 
         if (inventory.isIdDuplicate(id)) {
-            System.out.println("Item with ID " + id + " already exists!");
+            System.out.println(
+                    "Item with ID " + id + " already exists!");
             return;
         }
 
         String name = getNameInput();
+
         if (name == null) {
             cancelOperation();
             return;
@@ -364,13 +389,15 @@ public class InventorySystem {
 
         System.out.print("Enter Quantity (or 'back' to cancel): ");
         Integer quantity = getQuantityInput();
+
         if (quantity == null) {
             cancelOperation();
             return;
         }
 
-        System.out.print("Enter Price (\u20B1) (or 'back' to cancel): ");
+        System.out.print("Enter Price (or 'back' to cancel): ₱");
         Double price = getPriceInput();
+
         if (price == null) {
             cancelOperation();
             return;
@@ -385,7 +412,9 @@ public class InventorySystem {
 
     private void updateItem() {
         printSectionHeader("Update Item");
+
         String id = getIdInput();
+
         if (id == null) {
             cancelOperation();
             return;
@@ -402,6 +431,7 @@ public class InventorySystem {
         System.out.println("2. Update Price");
         System.out.println("0. Back to Main Menu");
         System.out.print("\nEnter your choice: ");
+
         int choice = getMenuChoice(1, 2, true);
 
         if (choice == 0) {
@@ -410,33 +440,54 @@ public class InventorySystem {
         }
 
         if (choice == 1) {
-            System.out.print("Enter new Quantity (or 'back' to cancel): ");
+            System.out.print(
+                    "Enter new Quantity (or 'back' to cancel): ");
+
             Integer newQuantity = getQuantityInput();
+
             if (newQuantity == null) {
                 cancelOperation();
                 return;
             }
+
             int oldQuantity = item.getQuantity();
+
             inventory.updateItemQuantity(id, newQuantity);
-            System.out.println("Quantity of Item " + item.getName() + " is updated from " +
-                    oldQuantity + " to " + newQuantity);
+
+            System.out.println(
+                    "Quantity of Item " + item.getName()
+                            + " is updated from " + oldQuantity
+                            + " to " + newQuantity);
+
         } else {
-            System.out.print("Enter new Price (\u20B1) (or 'back' to cancel): ");
+            System.out.print(
+                    "Enter new Price (or 'back' to cancel): ₱");
+
             Double newPrice = getPriceInput();
+
             if (newPrice == null) {
                 cancelOperation();
                 return;
             }
+
             double oldPrice = item.getPrice();
+
             inventory.updateItemPrice(id, newPrice);
-            System.out.println("Price of Item " + item.getName() + " is updated from " +
-                    formatPrice(oldPrice) + " to " + formatPrice(newPrice));
+
+            System.out.println(
+                    "Price of Item " + item.getName()
+                            + " is updated from "
+                            + formatPrice(oldPrice)
+                            + " to "
+                            + formatPrice(newPrice));
         }
     }
 
     private void removeItem() {
         printSectionHeader("Remove Item");
+
         String id = getIdInput();
+
         if (id == null) {
             cancelOperation();
             return;
@@ -445,7 +496,9 @@ public class InventorySystem {
         Item item = inventory.removeItem(id);
 
         if (item != null) {
-            System.out.println("Item " + item.getName() + " has been removed from the inventory");
+            System.out.println(
+                    "Item " + item.getName()
+                            + " has been removed from the inventory");
         } else {
             System.out.println("Item not found!");
         }
@@ -453,10 +506,14 @@ public class InventorySystem {
 
     private void displayItemsByCategory() {
         printSectionHeader("Display Items by Category");
+
         System.out.println("\n1. Clothing");
         System.out.println("2. Electronics");
         System.out.println("3. Entertainment");
-        System.out.print("\nEnter Category (name, number, or 'back' to cancel): ");
+
+        System.out.print(
+                "\nEnter Category (name, number, or 'back' to cancel): ");
+
         String rawInput = scanner.nextLine().trim();
 
         if (rawInput.equalsIgnoreCase("back")) {
@@ -466,16 +523,25 @@ public class InventorySystem {
 
         String category = applyCategoryShortcut(rawInput);
 
+        if (category.isEmpty()) {
+            System.out.println("Category cannot be empty!");
+            return;
+        }
+
         if (!inventory.isCategoryValid(category)) {
-            System.out.println("Category " + category + " does not exist!");
+            System.out.println(
+                    "Category " + category + " does not exist!");
             return;
         }
 
         String normalizedCategory = inventory.normalizeCategory(category);
-        List<Item> items = inventory.getItemsByCategory(normalizedCategory);
+
+        List<Item> items =
+                inventory.getItemsByCategory(normalizedCategory);
 
         if (items.isEmpty()) {
-            System.out.println("No items found in category " + normalizedCategory);
+            System.out.println(
+                    "No items found in category " + normalizedCategory);
             return;
         }
 
@@ -497,7 +563,9 @@ public class InventorySystem {
 
     private void searchItem() {
         printSectionHeader("Search Item");
+
         String id = getIdInput();
+
         if (id == null) {
             cancelOperation();
             return;
@@ -507,9 +575,23 @@ public class InventorySystem {
 
         if (item != null) {
             System.out.println("\nItem Found:");
-            System.out.printf("%-15s %-25s %-12s %-14s %s\n", "ID", "Name", "Quantity", "Price", "Category");
-            System.out.printf("%-15s %-25s %-12d %-14s %s\n",
-                    item.getId(), item.getName(), item.getQuantity(), formatPrice(item.getPrice()), item.getCategory());
+
+            System.out.printf(
+                    "%-15s %-25s %-12s %-14s %s\n",
+                    "ID",
+                    "Name",
+                    "Quantity",
+                    "Price",
+                    "Category");
+
+            System.out.printf(
+                    "%-15s %-25s %-12d %-14s %s\n",
+                    item.getId(),
+                    item.getName(),
+                    item.getQuantity(),
+                    formatPrice(item.getPrice()),
+                    item.getCategory());
+
         } else {
             System.out.println("Item not found!");
         }
@@ -528,7 +610,9 @@ public class InventorySystem {
         System.out.println("2. Price");
         System.out.println("0. Back to Main Menu");
         System.out.print("\nEnter your choice: ");
+
         int sortField = getMenuChoice(1, 2, true);
+
         if (sortField == 0) {
             cancelOperation();
             return;
@@ -539,7 +623,9 @@ public class InventorySystem {
         System.out.println("2. Descending");
         System.out.println("0. Back to Main Menu");
         System.out.print("\nEnter your choice: ");
+
         int sortOrderChoice = getMenuChoice(1, 2, true);
+
         if (sortOrderChoice == 0) {
             cancelOperation();
             return;
@@ -548,6 +634,7 @@ public class InventorySystem {
         boolean ascending = (sortOrderChoice == 1);
 
         List<Item> sortedItems;
+
         if (sortField == 1) {
             sortedItems = inventory.sortByQuantity(ascending);
         } else {
@@ -558,32 +645,89 @@ public class InventorySystem {
     }
 
     private void displayLowStockItems() {
-        printSectionHeader("Low Stock Items (Quantity <= 5)");
+        printSectionHeader(
+                "Low Stock Items (Quantity <= 5)");
 
-        List<Item> lowStockItems = inventory.getLowStockItems();
+        List<Item> lowStockItems =
+                inventory.getLowStockItems();
 
         if (lowStockItems.isEmpty()) {
             System.out.println("No low stock items!");
             return;
         }
 
-        printItemTable(lowStockItems, true);
+        System.out.printf(
+                "%-12s %-20s %-10s %-12s %-16s %s\n",
+                "ID",
+                "Name",
+                "Quantity",
+                "Price",
+                "Stock Status",
+                "Category");
+
+        System.out.println("=".repeat(BANNER_WIDTH));
+
+        for (Item item : lowStockItems) {
+            String status;
+
+            if (item.getQuantity() == 0) {
+                status = "OUT OF STOCK";
+            } else {
+                status = "LOW STOCK";
+            }
+
+            System.out.printf(
+                    "%-12s %-20s %-10d %-12s %-16s %s\n",
+                    item.getId(),
+                    item.getName(),
+                    item.getQuantity(),
+                    formatPrice(item.getPrice()),
+                    status,
+                    item.getCategory());
+        }
     }
 
-    private void printItemTable(List<Item> items, boolean includeCategory) {
+    private void printItemTable(
+            List<Item> items, boolean includeCategory) {
+
         if (includeCategory) {
-            System.out.printf("%-15s %-25s %-12s %-14s %s\n", "ID", "Name", "Quantity", "Price", "Category");
+            System.out.printf(
+                    "%-15s %-25s %-12s %-14s %s\n",
+                    "ID",
+                    "Name",
+                    "Quantity",
+                    "Price",
+                    "Category");
+
             System.out.println("=".repeat(BANNER_WIDTH));
+
             for (Item item : items) {
-                System.out.printf("%-15s %-25s %-12d %-14s %s\n",
-                        item.getId(), item.getName(), item.getQuantity(), formatPrice(item.getPrice()), item.getCategory());
+                System.out.printf(
+                        "%-15s %-25s %-12d %-14s %s\n",
+                        item.getId(),
+                        item.getName(),
+                        item.getQuantity(),
+                        formatPrice(item.getPrice()),
+                        item.getCategory());
             }
+
         } else {
-            System.out.printf("%-15s %-25s %-12s %s\n", "ID", "Name", "Quantity", "Price");
+            System.out.printf(
+                    "%-15s %-25s %-12s %s\n",
+                    "ID",
+                    "Name",
+                    "Quantity",
+                    "Price");
+
             System.out.println("=".repeat(BANNER_WIDTH));
+
             for (Item item : items) {
-                System.out.printf("%-15s %-25s %-12d %s\n",
-                        item.getId(), item.getName(), item.getQuantity(), formatPrice(item.getPrice()));
+                System.out.printf(
+                        "%-15s %-25s %-12d %s\n",
+                        item.getId(),
+                        item.getName(),
+                        item.getQuantity(),
+                        formatPrice(item.getPrice()));
             }
         }
     }
